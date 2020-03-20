@@ -2,7 +2,7 @@
   <div class="game-page" :class="currentTheme.name">
     <table class="map" @click="handleClick">
       <tr  :key="row" v-for="(cols, row) in mapData">
-        <cell :key="col" v-for="(cell, col) in cols"  :className="cell.className"></cell>
+        <cell :key="col" v-for="(cell, col) in cols" :isSelected="cell.isSelected" :isLine="cell.isLine" :lineClass="cell.lineClass" :isBlank="cell.isBlank" :className="cell.className"></cell>
       </tr>
     </table>
     <div class="configs">
@@ -92,7 +92,6 @@ export default {
       this.$forceUpdate()
     },
     selectCell(cCell) {
-      console.log(cCell)
       // 如果没有选中，则设置为选中状态
       if (!this.currentSelect) {
         cCell.isSelected = true
@@ -391,7 +390,7 @@ table {
       content: '';
       display: block;
       position: absolute;
-      background-color: red;
+      background-color: #ff0000;
     }
     &.line-l{
       &.line-r {
