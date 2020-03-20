@@ -85,13 +85,14 @@ export default {
       let col = e.target.cellIndex || e.target.parentNode.cellIndex
       let row = e.target.parentNode.rowIndex || e.target.parentNode.parentNode.rowIndex
       let currentCell = this.mapData[row][col]
-      console.log(currentCell)
+      
       // 判断点击的方块，如果是空白方块则退出
       if (currentCell.isBlank) return
       this.selectCell(currentCell)
       this.$forceUpdate()
     },
     selectCell(cCell) {
+      console.log(cCell)
       // 如果没有选中，则设置为选中状态
       if (!this.currentSelect) {
         cCell.isSelected = true
@@ -194,11 +195,21 @@ export default {
       let intersection = this.getIntersection(pH, cV) || this.getIntersection(pV, cH)
       // 获取到交点则返回路径
       // 上一个选中 => 第一个拐角 => 当前选中
-      if (intersection) return this.getBeeline(prev, intersection).concat(this.getBeeline(intersection, curr).slice(1))
+      if (intersection) return this.getBeeline(p, intersection).concat(this.getBeeline(intersection, c).slice(1))
 
       // 两个拐角的情况
+      let intersectionArr = this.getIntersectionArr(pH, cH, p.row, c.row, true)
 
+      if (intersectionArr.length === 0) {
+        intersectionArr = this.getIntersectionArr(pH, cH, p.row, c.row, false)
+      }
 
+      // 如果数组有值，则返回一个包含两个拐角的方块的数组
+      // 上一个选中 => 第一个拐角 => 第二个拐角 => 当前选中
+      if (intersectionArr.length > 0) {
+        result = this.getBeeline(p, intersectionArr[0]).concat(this.getBeeline(intersectionArr[0],intersectionArr[1]).slice(1)).concat(this.getBeeline(intersectionArr[1],c).slice(1))
+      }
+      
       return result
     },
     getHorizontalLine(c) {
@@ -257,6 +268,7 @@ export default {
       // 判断一下直线的方向，如果是反方向那么将数组reverse
       return startIndex < endIndex ? arr.slice(startIndex, endIndex + 1) : arr.slice(endIndex, startIndex + 1).reverse()
     },
+    // 一个拐角
     getIntersection(pLine, cLine) {
       let intersection = null
       for(let cell of pLine) {
@@ -268,8 +280,49 @@ export default {
 
       return intersection
     },
+    // 两个拐角
     getIntersectionArr(p, c, pIndex, cIndex, isRow) {
+      let result = []
+      if (!p.size || !c.size) {
+        return result
+      }
 
+      let rowKey = isRow ? 'col' : 'row'
+      let pFullLine = isRow ? this.mapData[pIndex] : this.mapData.map(e => e[pIndex])
+      let cFullLine = isRow ? this.mapData[cIndex] : this.mapData.map(e => e[cIndex])
+
+      for(let pCell of p) {
+        if (!pCell.isBlank) continue
+
+        let target = cFullLine[pCell[rowKey]]
+
+        // 判断 target 是否在连接线中
+        if (c.has(target)) {
+          let index = target[rowKey]
+          // 判断这条垂线是否是连通的
+          let isBeeline = this.checkBeeline(pFullLine[index], cFullLine[index])
+
+          if (isBeeline) {
+            // 返回两个端点
+            return [pFullLine[index], cFullLine[index]]
+          }
+        }
+      }
+
+      return result
+    },
+    checkBeeline(start, end) {
+      let result = true
+      // 获取两个点的连接线
+      let beeline = this.getBeeline(start, end)
+      for (let lineCell of beeline) {
+        // 判断线上是否有非空节点，存在则无法连通
+        if (!lineCell.isBlank) {
+          result = false
+          break
+        }
+      }
+      return result
     },
     handleRestart() {
       this.mapData = this.initData()
@@ -316,7 +369,6 @@ table {
   td {
     border: 3px solid;
     border-color: transparent;
-    cursor: pointer;
     border-radius: 4px;
     position: relative;
   }
