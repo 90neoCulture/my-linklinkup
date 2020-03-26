@@ -144,9 +144,9 @@ export default {
       })
 
       // 根据设置中的延迟来隐藏连接线
-      setTimeout(() => {
-        this.hideLine(line)
-      }, this.config.lineDelay)
+      // setTimeout(() => {
+      //   this.hideLine(line)
+      // }, this.config.lineDelay)
     },
     addLineClass(p, c, n) {
       let result
@@ -370,6 +370,198 @@ table {
     border-color: transparent;
     border-radius: 4px;
     position: relative;
+    .line {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      &:before, &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: #ff0000;
+      }
+      &.line-l{
+        &.line-r {
+          &:before {
+            width: calc(50% + 4px);
+            height: 4px;
+            top: 50%;
+            right: 50%;
+            margin-top: -2px;
+          }
+        }
+      }
+      &.line-l {
+        &:before {
+          right: -4px;
+        }
+      }
+      &.line-r {
+        &:before {
+          width: calc(100% + 8px);
+          left: -4px;
+          right: -4px;
+        }
+      }
+      &.line-t, &.line-b {
+        &:after {
+          width: 4px;
+          height: calc(50% + 4px);
+          left: 50%;
+          bottom: 50%;
+          margin-left: -2px;
+        }
+      }
+      &.line-b {
+        &:after {
+          bottom: -4px;
+        }
+      }
+      &.line-t {
+        &.line-b {
+          &:after {
+            height: calc(100% + 8px);
+            top: -4px;
+            bottom: -4px;
+          }
+        }
+      }
+      &.line-t, &.line-b {
+        &.line-r {
+          &:before {
+            width: calc(50% + 6px);
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+          }
+        }
+      }
+      &.line-t, &.line-b {
+        &.line-l {
+          &:before {
+            width: calc(50% + 6px);
+            margin-right: -2px;
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+          }
+        }
+      }
+      &.line-start {
+        &.line-l, &.line-r {
+          &:before {
+            width: calc(20% + 4px);
+            right: 80%;
+          }
+        }
+      }
+      &.line-end {
+        &.line-l, &.line-r {
+          &:before {
+            width: calc(20% + 4px);
+            right: 80%;
+          }
+        }
+      }
+      &.line-start, &.line-end {
+        &.line-r {
+          &:before {
+            left: 80%;
+          }
+        }
+      }
+      &.line-start {
+        &.line-l, &.line-r {
+          &:after {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            right: 80%;
+            top: 50%;
+            margin-top: -5px;
+            margin-right: -5px;
+          }
+        }
+      }
+      &.line-end {
+        &.line-l, &.line-r {
+          &:after {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            right: 80%;
+            top: 50%;
+            margin-top: -5px;
+            margin-right: -5px;
+          }
+        }
+      }
+      &.line-start, &.line-end {
+        &.line-r {
+          &:after {
+            margin-left: -5px;
+            left: 80%;
+          }
+        }
+      }
+      &.line-start {
+        &.line-t, &.line-b {
+          &:after {
+            height: calc(20% + 4px);
+            bottom: 80%;
+          }
+        }
+      }
+      &.line-end {
+        &.line-t, &.line-b {
+          &:after {
+            height: calc(20% + 4px);
+            bottom: 80%;
+          }
+        }
+      }
+      &.line-start, &.line-end {
+        &.line-b {
+          &:after {
+            top: 80%;
+          }
+        }
+      }
+      &.line-start {
+        &.line-t, &.line-b {
+          &:before {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            bottom: 80%;
+            left: 50%;
+            margin-left: -5px;
+            margin-bottom: -5px;
+          }
+        }
+      }
+      &.line-end {
+        &.line-t, &.line-b {
+          &:before {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            bottom: 80%;
+            left: 50%;
+            margin-left: -5px;
+            margin-bottom: -5px;
+          }
+        }
+      }
+      &.line-start, &.line-end {
+        &.line-b {
+          &:before {
+            margin-top: -5px;
+            top: 80%;
+          }
+        }
+      }
+    }
   }
   .blank {
     img {
@@ -379,198 +571,6 @@ table {
   }
   .selected {
     border-color: #ff0000;
-  }
-  .line {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    &:before, &:after {
-      content: '';
-      display: block;
-      position: absolute;
-      background-color: #ff0000;
-    }
-    &.line-l{
-      &.line-r {
-        &:before {
-          width: calc(50% + 4px);
-          height: 4px;
-          top: 50%;
-          right: 50%;
-          margin-top: -2px;
-        }
-      }
-    }
-    &.line-l {
-      &:before {
-        right: -4px;
-      }
-    }
-    &.line-r {
-      &:before {
-        width: calc(100% + 8px);
-        left: -4px;
-        right: -4px;
-      }
-    }
-    &.line-t, &.line-b {
-      &:after {
-        width: 4px;
-        height: calc(50% + 4px);
-        left: 50%;
-        bottom: 50%;
-        margin-left: -2px;
-      }
-    }
-    &.line-b {
-      &:after {
-        bottom: -4px;
-      }
-    }
-    &.line-t {
-      &.line-b {
-        &:after {
-          height: calc(100% + 8px);
-          top: -4px;
-          bottom: -4px;
-        }
-      }
-    }
-    &.line-t, &.line-b {
-      &.line-r {
-        &:before {
-          width: calc(50% + 6px);
-          border-top-left-radius: 2px;
-          border-bottom-left-radius: 2px;
-        }
-      }
-    }
-    &.line-t, &.line-b {
-      &.line-l {
-        &:before {
-          width: calc(50% + 6px);
-          margin-right: -2px;
-          border-top-right-radius: 2px;
-          border-bottom-right-radius: 2px;
-        }
-      }
-    }
-    &.line-start {
-      &.line-l, &.line-r {
-        &:before {
-          width: calc(20% + 4px);
-          right: 80%;
-        }
-      }
-    }
-    &.line-end {
-      &.line-l, &.line-r {
-        &:before {
-          width: calc(20% + 4px);
-          right: 80%;
-        }
-      }
-    }
-    &.line-start, &.line-end {
-      &.line-r {
-        &:before {
-          left: 80%;
-        }
-      }
-    }
-    &.line-start {
-      &.line-l, &.line-r {
-        &:after {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          right: 80%;
-          top: 50%;
-          margin-top: -5px;
-          margin-right: -5px;
-        }
-      }
-    }
-    &.line-end {
-      &.line-l, &.line-r {
-        &:after {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          right: 80%;
-          top: 50%;
-          margin-top: -5px;
-          margin-right: -5px;
-        }
-      }
-    }
-    &.line-start, &.line-end {
-      &.line-r {
-        &:after {
-          margin-left: -5px;
-          left: 80%;
-        }
-      }
-    }
-    &.line-start {
-      &.line-t, &.line-b {
-        &:after {
-          height: calc(20% + 4px);
-          bottom: 80%;
-        }
-      }
-    }
-    &.line-end {
-      &.line-t, &.line-b {
-        &:after {
-          height: calc(20% + 4px);
-          bottom: 80%;
-        }
-      }
-    }
-    &.line-start, &.line-end {
-      &.line-b {
-        &:after {
-          top: 80%;
-        }
-      }
-    }
-    &.line-start {
-      &.line-t, &.line-b {
-        &:before {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          bottom: 80%;
-          left: 50%;
-          margin-left: -5px;
-          margin-bottom: -5px;
-        }
-      }
-    }
-    &.line-end {
-      &.line-t, &.line-b {
-        &:before {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          bottom: 80%;
-          left: 50%;
-          margin-left: -5px;
-          margin-bottom: -5px;
-        }
-      }
-    }
-    &.line-start, &.line-end {
-      &.line-b {
-        &:before {
-          margin-top: -5px;
-          top: 80%;
-        }
-      }
-    }
   }
 }
 </style>
