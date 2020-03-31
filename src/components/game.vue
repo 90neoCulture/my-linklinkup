@@ -157,7 +157,7 @@ export default {
         // 结束节点
         result = 'line-end line-' + this.getDirection(c, p)
       } else {
-        result = 'line-'+ this.getDirection(c, p) + 'line-' + this.getDirection(c, n)
+        result = 'line-'+ this.getDirection(c, p) + ' line-' + this.getDirection(c, n)
       }
       return 'line ' + result
     },
@@ -330,7 +330,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 table {
   border-spacing: 0;
 }

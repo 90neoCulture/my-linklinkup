@@ -1,6 +1,6 @@
 <template>
   <td :class="classNames">
-    <div v-if="isLine" :class="lineClass"></div>
+    <div v-if="isLine" :class="lineClass">11</div>
     <img v-if="imgList[className-1]" :src="imgList[className-1]" />
   </td>
 </template>
