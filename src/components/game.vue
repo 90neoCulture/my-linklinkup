@@ -116,7 +116,10 @@ export default {
       }
 
       // 获取两个方块的连接线
+      console.time('getLine')
       let result = this.getLine(pCell, cCell)
+      console.timeEnd('getLine')
+
       if (result.length === 0) {
         // 如果没有获取到连接线，说明两个方块无法连接，那么将点击的方块设置为选中状态
         cCell.isSelected = true
@@ -131,6 +134,8 @@ export default {
         pCell.className = ''
         cCell.className = ''
 
+        this.currentSelect = null
+
         // 绘制连接线
         this.drawLine(result)
       }
@@ -144,9 +149,9 @@ export default {
       })
 
       // 根据设置中的延迟来隐藏连接线
-      // setTimeout(() => {
-      //   this.hideLine(line)
-      // }, this.config.lineDelay)
+      setTimeout(() => {
+        this.hideLine(line)
+      }, this.config.lineDelay)
     },
     addLineClass(p, c, n) {
       let result
@@ -200,7 +205,7 @@ export default {
       let intersectionArr = this.getIntersectionArr(pH, cH, p.row, c.row, true)
 
       if (intersectionArr.length === 0) {
-        intersectionArr = this.getIntersectionArr(pH, cH, p.row, c.row, false)
+        intersectionArr = this.getIntersectionArr(pV, cV, p.col, c.col, false)
       }
 
       // 如果数组有值，则返回一个包含两个拐角的方块的数组
@@ -271,7 +276,7 @@ export default {
     getIntersection(pLine, cLine) {
       let intersection = null
       for(let cell of pLine) {
-        if (cLine.has(cell) || cell.isBlank) {
+        if (cLine.has(cell) && cell.isBlank) {
           intersection = cell
           break
         }
@@ -303,7 +308,8 @@ export default {
 
           if (isBeeline) {
             // 返回两个端点
-            return [pFullLine[index], cFullLine[index]]
+            result =  [pFullLine[index], cFullLine[index]]
+            break
           }
         }
       }
@@ -382,27 +388,27 @@ table {
         position: absolute;
         background-color: #ff0000;
       }
-      &.line-l{
-        &.line-r {
-          &:before {
-            width: calc(50% + 4px);
-            height: 4px;
-            top: 50%;
-            right: 50%;
-            margin-top: -2px;
-          }
-        }
-      }
-      &.line-l {
+      &.line-l,&.line-r {
         &:before {
-          right: -4px;
+          width: calc(50% + 4px);
+          height: 4px;
+          top: 50%;
+          right: 50%;
+          margin-top: -2px;
         }
       }
       &.line-r {
         &:before {
-          width: calc(100% + 8px);
-          left: -4px;
           right: -4px;
+        }
+      }
+      &.line-l {
+        &.line-r{
+          &:before {
+            width: calc(100% + 8px);
+            left: -4px;
+            right: -4px;
+          }
         }
       }
       &.line-t, &.line-b {
